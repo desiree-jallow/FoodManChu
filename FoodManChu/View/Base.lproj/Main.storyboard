@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QLa-tQ-BZd">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -10,19 +11,117 @@
         <!--MainVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MainVC" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainVC" customModule="FoodManChu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kBq-QK-0WQ">
+                                <rect key="frame" x="0.0" y="144" width="414" height="718"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCell" rowHeight="173" id="gE4-Qv-E6J" customClass="RecipeCell" customModule="FoodManChu" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="173"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gE4-Qv-E6J" id="J49-0z-GUe">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="173"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shrimp Scampi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F06-r2-Fnt">
+                                                    <rect key="frame" x="130" y="11" width="264" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="50" id="ge7-J5-IYm"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="21"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A garlic buttery scampi sauce with a hint of white wine &amp; lemon in less than 10 minutes! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92z-oL-7IC">
+                                                    <rect key="frame" x="130" y="61" width="264" height="70"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="70" id="CrB-7p-cuJ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shrimpScampi" translatesAutoresizingMaskIntoConstraints="NO" id="CXW-TP-pCx">
+                                                    <rect key="frame" x="20" y="36.5" width="100" height="100"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="100" id="2Xk-OA-wF7"/>
+                                                        <constraint firstAttribute="height" constant="100" id="OqT-2l-sE2"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="CXW-TP-pCx" firstAttribute="leading" secondItem="J49-0z-GUe" secondAttribute="leadingMargin" id="5VC-y2-eP5"/>
+                                                <constraint firstItem="F06-r2-Fnt" firstAttribute="leading" secondItem="CXW-TP-pCx" secondAttribute="trailing" constant="10" id="Slw-jL-X6q"/>
+                                                <constraint firstItem="CXW-TP-pCx" firstAttribute="centerY" secondItem="J49-0z-GUe" secondAttribute="centerY" id="azT-FB-cEZ"/>
+                                                <constraint firstItem="92z-oL-7IC" firstAttribute="top" secondItem="F06-r2-Fnt" secondAttribute="bottom" id="duj-dz-43g"/>
+                                                <constraint firstItem="92z-oL-7IC" firstAttribute="leading" secondItem="CXW-TP-pCx" secondAttribute="trailing" constant="10" id="fK4-Qx-7dH"/>
+                                                <constraint firstItem="F06-r2-Fnt" firstAttribute="trailing" secondItem="J49-0z-GUe" secondAttribute="trailingMargin" id="kA8-hv-uPV"/>
+                                                <constraint firstItem="92z-oL-7IC" firstAttribute="trailing" secondItem="J49-0z-GUe" secondAttribute="trailingMargin" id="mfH-xm-4fw"/>
+                                                <constraint firstItem="F06-r2-Fnt" firstAttribute="top" secondItem="J49-0z-GUe" secondAttribute="topMargin" id="vdK-Hm-hJR"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="recipeDescription" destination="92z-oL-7IC" id="Vxm-Z3-fiB"/>
+                                            <outlet property="recipeImageView" destination="CXW-TP-pCx" id="sRz-bG-bqi"/>
+                                            <outlet property="recipeTitle" destination="F06-r2-Fnt" id="G1o-sp-vis"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="xHa-Gh-HrY"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="hbp-uC-5Hw"/>
+                                </connections>
+                            </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Re8-Le-kn8">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kBq-QK-0WQ" firstAttribute="top" secondItem="Re8-Le-kn8" secondAttribute="bottom" id="4Sk-wn-z1V"/>
+                            <constraint firstItem="kBq-QK-0WQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4W6-ec-y01"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="kBq-QK-0WQ" secondAttribute="trailing" id="9NL-0U-zgk"/>
+                            <constraint firstItem="Re8-Le-kn8" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="9i0-DD-Vha"/>
+                            <constraint firstItem="Re8-Le-kn8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="C3B-E0-pKa"/>
+                            <constraint firstItem="Re8-Le-kn8" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Yyg-bJ-nKW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kBq-QK-0WQ" secondAttribute="bottom" id="i8S-Hw-g74"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="lwT-AX-SfI">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="o5F-W1-xa1"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1195.6521739130435" y="41.517857142857139"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="fQJ-tP-sVR">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="QLa-tQ-BZd" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rc4-Qi-71D">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Jaw-SX-O83"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yR9-wT-JJR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="41.517857142857139"/>
         </scene>
     </scenes>
     <resources>
+        <image name="shrimpScampi" width="341" height="512"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
