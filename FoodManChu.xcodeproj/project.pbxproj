@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D7431DE8257830B1004E6755 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7431DE7257830B1004E6755 /* Constants.swift */; };
 		D7431DEC25783A51004E6755 /* RecipeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7431DEB25783A51004E6755 /* RecipeCell.swift */; };
+		D7431DEF25784A42004E6755 /* RecipeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7431DEE25784A42004E6755 /* RecipeVC.swift */; };
+		D7431DF225784A74004E6755 /* IngredientsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7431DF125784A74004E6755 /* IngredientsVC.swift */; };
 		D745F6A82576FF49002F77C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D745F6A72576FF49002F77C7 /* AppDelegate.swift */; };
 		D745F6AA2576FF49002F77C7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D745F6A92576FF49002F77C7 /* SceneDelegate.swift */; };
 		D745F6AC2576FF49002F77C7 /* MainVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D745F6AB2576FF49002F77C7 /* MainVC.swift */; };
@@ -21,6 +23,8 @@
 /* Begin PBXFileReference section */
 		D7431DE7257830B1004E6755 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D7431DEB25783A51004E6755 /* RecipeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCell.swift; sourceTree = "<group>"; };
+		D7431DEE25784A42004E6755 /* RecipeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeVC.swift; sourceTree = "<group>"; };
+		D7431DF125784A74004E6755 /* IngredientsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientsVC.swift; sourceTree = "<group>"; };
 		D745F6A42576FF49002F77C7 /* FoodManChu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodManChu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D745F6A72576FF49002F77C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D745F6A92576FF49002F77C7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				D745F6AB2576FF49002F77C7 /* MainVC.swift */,
+				D7431DEE25784A42004E6755 /* RecipeVC.swift */,
+				D7431DF125784A74004E6755 /* IngredientsVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -181,9 +187,11 @@
 				D7431DE8257830B1004E6755 /* Constants.swift in Sources */,
 				D745F6AC2576FF49002F77C7 /* MainVC.swift in Sources */,
 				D745F6A82576FF49002F77C7 /* AppDelegate.swift in Sources */,
+				D7431DF225784A74004E6755 /* IngredientsVC.swift in Sources */,
 				D7431DEC25783A51004E6755 /* RecipeCell.swift in Sources */,
 				D745F6AA2576FF49002F77C7 /* SceneDelegate.swift in Sources */,
 				D745F6B22576FF49002F77C7 /* FoodManChu.xcdatamodeld in Sources */,
+				D7431DEF25784A42004E6755 /* RecipeVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

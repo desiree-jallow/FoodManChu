@@ -94,12 +94,32 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lwT-AX-SfI">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="o5F-W1-xa1"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="o5F-W1-xa1">
+                            <connections>
+                                <segue destination="GUz-sh-UYB" kind="show" id="Lp3-R9-Brj"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1195.6521739130435" y="41.517857142857139"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="QMf-H8-IYf">
+            <objects>
+                <viewController id="GUz-sh-UYB" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="0o9-bt-hXM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="ip9-Fc-Yg6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="xab-Ri-rjL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kka-aB-Y5c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1990" y="42"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fQJ-tP-sVR">
