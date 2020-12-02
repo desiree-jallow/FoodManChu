@@ -21,10 +21,6 @@ class IngredientsVC: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -91,6 +87,7 @@ class IngredientsVC: UITableViewController {
         for ingredient in ingredientsList {
             let myIngredient = Ingredient(context: Constants.context)
             myIngredient.ingredientName = ingredient
+            Constants.appDelegate.saveContext()
         }
         
     }
