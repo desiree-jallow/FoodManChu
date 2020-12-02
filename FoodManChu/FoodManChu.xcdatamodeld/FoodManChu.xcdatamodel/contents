@@ -17,8 +17,8 @@
         <relationship name="ingredient" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Ingredient"/>
     </entity>
     <elements>
+        <element name="Category" positionX="-276.203125" positionY="-24.8125" width="128" height="28"/>
         <element name="Ingredient" positionX="173.6875" positionY="90.47265625" width="128" height="73"/>
-        <element name="Category" positionX="-276.203125" positionY="-24.8125" width="128" height="73"/>
-        <element name="Recipe" positionX="-255.75" positionY="256.5" width="128" height="133"/>
+        <element name="Recipe" positionX="-144.15234375" positionY="263.76953125" width="128" height="133"/>
     </elements>
 </model>
