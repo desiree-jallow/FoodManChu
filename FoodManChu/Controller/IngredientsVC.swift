@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import CoreData
 
 class IngredientsVC: UITableViewController {
+    
+    var ingredients = [Ingredient]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        generateIngredients()
+        fetchIngredients()
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -24,18 +29,20 @@ class IngredientsVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return ingredients.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.ingredientsReuseCell, for: indexPath)
+        
+        cell.textLabel?.text = ingredients[indexPath.row].ingredientName
+        
         // Configure the cell...
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.
@@ -88,6 +95,17 @@ class IngredientsVC: UITableViewController {
             let myIngredient = Ingredient(context: Constants.context)
             myIngredient.ingredientName = ingredient
             Constants.appDelegate.saveContext()
+        }
+        
+    }
+    
+    func fetchIngredients() {
+        let fetchRequest = NSFetchRequest<Ingredient>(entityName: "Ingredient")
+        
+        do {
+            ingredients = try Constants.context.fetch(fetchRequest)
+        } catch  {
+            print(error.localizedDescription)
         }
         
     }

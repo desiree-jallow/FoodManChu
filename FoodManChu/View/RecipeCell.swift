@@ -12,7 +12,7 @@ class RecipeCell: UITableViewCell {
     @IBOutlet weak var recipeDescription: UILabel!
     @IBOutlet weak var recipeTitle: UILabel!
     
-    func configurCell() {
+    func configureCell() {
         let recipe = Recipe(context: Constants.context)
         recipe.recipeName = "Shrimp Scampi"
         recipe.imageName = "shrimpScampi"
