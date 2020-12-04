@@ -15,6 +15,7 @@ class RecipeVC: UIViewController {
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var prepTextField: UITextField!
     @IBOutlet weak var recipeImage: UIImageView!
+    @IBOutlet weak var prepSlider: UISlider!
     @IBOutlet weak var categoryTextField: UITextField!
     
     let picker = UIPickerView()
@@ -31,7 +32,15 @@ class RecipeVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    @IBAction func sliderChanged(_ sender: UISlider) {
+        let newValue = Int(sender.value/5) * 5
+        sender.setValue(Float(newValue), animated: false)
+        prepTextField.text = String(newValue)
+    
+    }
+    
 
+    
     /*
     // MARK: - Navigation
 
@@ -64,7 +73,7 @@ class RecipeVC: UIViewController {
             
         }
     }
-
+//MARK: - UIPickerView
 extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -81,5 +90,9 @@ extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
         self.view.endEditing(true)
     }
     
+    
+}
+
+extension RecipeVC: UITextFieldDelegate {
     
 }
