@@ -8,6 +8,7 @@
 import UIKit
 
 class MainVC: UIViewController {
+    var recipes = [Recipe]()
 
     override func viewDidLoad() {
         super.viewDidLoad()

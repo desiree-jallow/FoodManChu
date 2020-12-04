@@ -22,8 +22,10 @@ class RecipeVC: UIViewController {
     
     var categories = [Category]()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepTextField.delegate = self
         categoryTextField.inputView = picker
         picker.delegate = self
 //        generateCategories()
@@ -84,15 +86,22 @@ extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return categories[row].categoryName
+        
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         categoryTextField.text = categories[row].categoryName
         self.view.endEditing(true)
     }
-    
-    
 }
 
+//MARK: - UITextFieldDelegate
 extension RecipeVC: UITextFieldDelegate {
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = prepTextField.text {
+            let value = Float(text) ?? 240.0
+            prepSlider.setValue(value, animated: true)
+            prepTextField.resignFirstResponder()
+        }
+        return true
+    }
 }

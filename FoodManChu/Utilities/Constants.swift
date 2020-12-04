@@ -15,7 +15,8 @@ struct Constants {
     static let recipeReuseCell = "RecipeCell"
     
     static let addRecipe = "AddRecipeSegue"
-    
     static let editRecipe = "EditRecipeSegue"
+    
     static let ingredientsReuseCell = "IngredientsCell"
+    static let userIngredientsCell = "userIngredientsCell"
 }

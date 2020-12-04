@@ -18,6 +18,7 @@
 		D745F6B22576FF49002F77C7 /* FoodManChu.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D745F6B02576FF49002F77C7 /* FoodManChu.xcdatamodeld */; };
 		D745F6B42576FF4B002F77C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D745F6B32576FF4B002F77C7 /* Assets.xcassets */; };
 		D745F6B72576FF4B002F77C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D745F6B52576FF4B002F77C7 /* LaunchScreen.storyboard */; };
+		D7EE0013257AE77C003421A4 /* UserIngredientsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EE0012257AE77C003421A4 /* UserIngredientsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		D745F6B32576FF4B002F77C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D745F6B62576FF4B002F77C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D745F6B82576FF4B002F77C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7EE0012257AE77C003421A4 /* UserIngredientsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIngredientsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +61,7 @@
 			children = (
 				D745F6AD2576FF49002F77C7 /* Main.storyboard */,
 				D7431DEB25783A51004E6755 /* RecipeCell.swift */,
+				D7EE0012257AE77C003421A4 /* UserIngredientsCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				D7431DF225784A74004E6755 /* IngredientsVC.swift in Sources */,
 				D7431DEC25783A51004E6755 /* RecipeCell.swift in Sources */,
 				D745F6AA2576FF49002F77C7 /* SceneDelegate.swift in Sources */,
+				D7EE0013257AE77C003421A4 /* UserIngredientsCell.swift in Sources */,
 				D745F6B22576FF49002F77C7 /* FoodManChu.xcdatamodeld in Sources */,
 				D7431DEF25784A42004E6755 /* RecipeVC.swift in Sources */,
 			);
