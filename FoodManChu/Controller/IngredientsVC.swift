@@ -62,14 +62,25 @@ class IngredientsVC: UITableViewController {
         let ingredient = ingredients[indexPath.row]
         
         if ingredient.isUserCreated == true {
+            userIngredientsCell.accessoryType = ingredient.isSelected ? .checkmark : .none
             userIngredientsCell.configureCell(ingredient: ingredient)
             return userIngredientsCell
         } else {
+            autoIngredientsCell.accessoryType = ingredient.isSelected ? .checkmark : .none
             autoIngredientsCell.textLabel?.text = ingredient.ingredientName
             return autoIngredientsCell
        }
         
         
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let ingredient = ingredients[indexPath.row]
+        ingredient.isSelected.toggle()
+        Constants.appDelegate.saveContext()
+        tableView.reloadData()
+        
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 
