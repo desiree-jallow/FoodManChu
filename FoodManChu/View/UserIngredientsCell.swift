@@ -14,8 +14,8 @@ class UserIngredientsCell: UITableViewCell {
         
     }
     
-    func configureCell(ingredients: [Ingredient]) {
-        
+    func configureCell(ingredient: Ingredient) {
+        ingredientLabel.text = ingredient.ingredientName
     }
     
 }

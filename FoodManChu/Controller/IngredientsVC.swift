@@ -9,36 +9,36 @@ import UIKit
 import CoreData
 
 class IngredientsVC: UITableViewController {
-    
     var ingredients = [Ingredient]()
-    var userIngredients = [Ingredient]()
-    var ingredientName = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateIngredients()
         fetchIngredients()
 //        delete()
+        Constants.context.mergePolicy  = NSMergeByPropertyStoreTrumpMergePolicy
+
+
     }
 
     @IBAction func addIngredient(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
         let alertController = UIAlertController(title: "", message: "Add Ingredient", preferredStyle: .alert)
-        alertController.addTextField { (textField) in
+        
+        alertController.addTextField { (ingredientTextField) in
+            textField = ingredientTextField
             textField.placeholder = "ingredient name"
-            if let text = textField.text {
-                self.ingredientName = text
-            }
+            
         }
         
         let action = UIAlertAction(title: "add", style: .default) { [self] (add) in
             let newIngredient = Ingredient(context: Constants.context)
-            newIngredient.ingredientName = ingredientName
+            newIngredient.ingredientName = textField.text
             newIngredient.isUserCreated = true
-            if !ingredients.contains(newIngredient) {
-                ingredients.append(newIngredient)
-                Constants.appDelegate.saveContext()
-                tableView.reloadData()
-            }
+            Constants.appDelegate.saveContext()
+            fetchIngredients()
+            tableView.reloadData()
         }
         
         let cancelAction = UIAlertAction(title: "cancel", style: .cancel, handler: nil)
@@ -59,13 +59,17 @@ class IngredientsVC: UITableViewController {
         
         let userIngredientsCell = tableView.dequeueReusableCell(withIdentifier: Constants.userIngredientsCell, for: indexPath) as! UserIngredientsCell
         
-        if ingredients[indexPath.row].isUserCreated == true {
-            userIngredientsCell.ingredientLabel.text = ingredients[indexPath.row].ingredientName
+        let ingredient = ingredients[indexPath.row]
+        
+        if ingredient.isUserCreated == true {
+            userIngredientsCell.configureCell(ingredient: ingredient)
             return userIngredientsCell
         } else {
-            autoIngredientsCell.textLabel?.text = ingredients[indexPath.row].ingredientName
+            autoIngredientsCell.textLabel?.text = ingredient.ingredientName
             return autoIngredientsCell
-        }
+       }
+        
+        
     }
     
 
