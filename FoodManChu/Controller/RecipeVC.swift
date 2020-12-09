@@ -8,7 +8,7 @@
 import UIKit
 import CoreData
 
-class RecipeVC: UIViewController {
+class RecipeVC: UIViewController  {
 
     @IBOutlet weak var instructionsTextField: UITextField!
     @IBOutlet weak var descTextField: UITextField!
@@ -19,17 +19,21 @@ class RecipeVC: UIViewController {
     @IBOutlet weak var categoryTextField: UITextField!
     
     let picker = UIPickerView()
+    var imagePicker: UIImagePickerController!
     
     var categories = [Category]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
         prepTextField.delegate = self
         categoryTextField.inputView = picker
         picker.delegate = self
 //        generateCategories()
         fetchCategories()
+        
        
         // Do any additional setup after loading the view.
     }
@@ -41,7 +45,14 @@ class RecipeVC: UIViewController {
     
     }
     
+    //MARK: - UIImagePicker Delegate
+     
+    @IBAction func imageButtonPressed(_ sender: UIButton) {
+        present(imagePicker, animated: true, completion: nil)
+       
+    }
 
+    
     
     /*
     // MARK: - Navigation
@@ -75,6 +86,17 @@ class RecipeVC: UIViewController {
             
         }
     }
+//MARK: - UIImage Picker
+extension RecipeVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            recipeImage.image = image
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
 //MARK: - UIPickerView
 extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

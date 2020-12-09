@@ -9,6 +9,8 @@ import UIKit
 import CoreData
 
 class IngredientsVC: UITableViewController {
+    
+    
     var ingredients = [Ingredient]()
 
     override func viewDidLoad() {
@@ -20,7 +22,7 @@ class IngredientsVC: UITableViewController {
 
 
     }
-
+//MARK: - Add ingredient
     @IBAction func addIngredient(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
@@ -48,6 +50,7 @@ class IngredientsVC: UITableViewController {
         
         present(alertController, animated: true, completion: nil)
     }
+    
     // MARK: - Table view data source and delegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ingredients.count
@@ -64,14 +67,15 @@ class IngredientsVC: UITableViewController {
         if ingredient.isUserCreated == true {
             userIngredientsCell.accessoryType = ingredient.isSelected ? .checkmark : .none
             userIngredientsCell.configureCell(ingredient: ingredient)
+            userIngredientsCell.cellDelegate = self
+            
             return userIngredientsCell
+        
         } else {
             autoIngredientsCell.accessoryType = ingredient.isSelected ? .checkmark : .none
             autoIngredientsCell.textLabel?.text = ingredient.ingredientName
             return autoIngredientsCell
        }
-        
-        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -83,27 +87,20 @@ class IngredientsVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
 }
+//MARK: - Delete ingredient
+extension IngredientsVC: CustomCellDelegate {
+    func customCell(cell: UserIngredientsCell, didTappedThe button: UIButton?) {
+        let indexPath = tableView.indexPath(for: cell)
+        let ingredient = ingredients[indexPath!.row]
+        Constants.context.delete(ingredient)
+        ingredients.remove(at: indexPath!.row)
+        Constants.appDelegate.saveContext()
+        tableView.reloadData()
+    }
+    
+}
+    
 //MARK: - Generate and Fetch Ingredients List
     extension IngredientsVC {
         func generateIngredients() {
@@ -118,6 +115,7 @@ class IngredientsVC: UITableViewController {
     
     func fetchIngredients() {
         let fetchRequest = NSFetchRequest<Ingredient>(entityName: "Ingredient")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "ingredientName", ascending: true)]
         
         do {
             ingredients = try Constants.context.fetch(fetchRequest)
