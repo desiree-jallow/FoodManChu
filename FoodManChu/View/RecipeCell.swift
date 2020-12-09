@@ -6,23 +6,32 @@
 //
 
 import UIKit
+import CoreData
 
 class RecipeCell: UITableViewCell {
     @IBOutlet weak var recipeImageView: UIImageView!
     @IBOutlet weak var recipeDescription: UILabel!
     @IBOutlet weak var recipeTitle: UILabel!
     
-    func configureCell() {
-        let recipe = Recipe(context: Constants.context)
-        recipe.recipeName = "Shrimp Scampi"
-        recipe.imageName = "shrimpScampi"
-        recipe.recipeDescription = "A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes!"
+    func generateDummyCell() {
+        let dummyRecipe = Recipe(context: Constants.context)
+            
         
-        recipeImageView.image = UIImage(named: recipe.imageName!)
+        dummyRecipe.recipeName = "Shrimp Scampi"
+        dummyRecipe.imageName = "shrimpScampi"
+        dummyRecipe.recipeDescription = "A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes!"
+
+        recipeImageView.image = UIImage(named: dummyRecipe.imageName!)
+        recipeDescription.text = dummyRecipe.recipeDescription
+        recipeTitle.text = dummyRecipe.recipeName
+
+        Constants.appDelegate.saveContext()
+    }
+    
+    func configureCell(recipe: Recipe) {
+        recipeImageView.image = UIImage(named: recipe.imageName ?? "defaultmade" )
         recipeDescription.text = recipe.recipeDescription
         recipeTitle.text = recipe.recipeName
-        
-        Constants.appDelegate.saveContext()
     }
 
 }

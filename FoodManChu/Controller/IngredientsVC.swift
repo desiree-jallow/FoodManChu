@@ -18,6 +18,7 @@ class IngredientsVC: UITableViewController {
 //        generateIngredients()
         fetchIngredients()
 //        delete()
+        navigationController?.delegate = self
         Constants.context.mergePolicy  = NSMergeByPropertyStoreTrumpMergePolicy
 
 
@@ -77,7 +78,7 @@ class IngredientsVC: UITableViewController {
             return autoIngredientsCell
        }
     }
-    
+    //MARK: - Add checkmark to selected ingredient
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let ingredient = ingredients[indexPath.row]
         ingredient.isSelected.toggle()
@@ -87,6 +88,17 @@ class IngredientsVC: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+}
+//MARK: - Save Ingredients to Recipe
+extension IngredientsVC: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        for ingredient in ingredients {
+            if ingredient.isSelected {
+                (viewController as? RecipeVC)?.ingredientsArray.append(ingredient)
+            }
+        }
+        
+    }
 }
 //MARK: - Delete ingredient
 extension IngredientsVC: CustomCellDelegate {

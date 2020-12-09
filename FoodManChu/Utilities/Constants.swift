@@ -12,11 +12,12 @@ struct Constants {
     
     static let appDelegate = UIApplication.shared.delegate as! AppDelegate
     static let context = appDelegate.persistentContainer.viewContext
-    static let recipeReuseCell = "RecipeCell"
+    static let recipeReuseCell = "recipeCell"
     
-    static let addRecipe = "AddRecipeSegue"
-    static let editRecipe = "EditRecipeSegue"
+    static let addRecipe = "addRecipeSegue"
+    static let editRecipe = "editRecipeSegue"
+    static let saveSegue = "saveSegue"
     
-    static let ingredientsReuseCell = "IngredientsCell"
+    static let ingredientsReuseCell = "ingredientsCell"
     static let userIngredientsCell = "userIngredientsCell"
 }

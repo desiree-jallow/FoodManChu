@@ -13,14 +13,14 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainVC" customModule="FoodManChu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kBq-QK-0WQ">
-                                <rect key="frame" x="0.0" y="144" width="414" height="718"/>
+                                <rect key="frame" x="0.0" y="56" width="414" height="752"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCell" rowHeight="173" id="gE4-Qv-E6J" customClass="RecipeCell" customModule="FoodManChu" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="recipeCell" rowHeight="173" id="gE4-Qv-E6J" customClass="RecipeCell" customModule="FoodManChu" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="173"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gE4-Qv-E6J" id="J49-0z-GUe">
@@ -52,13 +52,22 @@
                                                         <constraint firstAttribute="height" constant="100" id="OqT-2l-sE2"/>
                                                     </constraints>
                                                 </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ZW-QP-pYu">
+                                                    <rect key="frame" x="376" y="14" width="21" height="24"/>
+                                                    <color key="tintColor" red="0.080323077739999998" green="0.21182638409999999" blue="0.2289803624" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <state key="normal" image="doc.on.doc" catalog="system"/>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="CXW-TP-pCx" firstAttribute="leading" secondItem="J49-0z-GUe" secondAttribute="leadingMargin" id="5VC-y2-eP5"/>
+                                                <constraint firstItem="4ZW-QP-pYu" firstAttribute="top" secondItem="J49-0z-GUe" secondAttribute="top" constant="14" id="Lz6-ZU-yzw"/>
+                                                <constraint firstItem="4ZW-QP-pYu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="J49-0z-GUe" secondAttribute="leading" constant="20" symbolic="YES" id="Mud-WX-pRk"/>
                                                 <constraint firstItem="F06-r2-Fnt" firstAttribute="leading" secondItem="CXW-TP-pCx" secondAttribute="trailing" constant="10" id="Slw-jL-X6q"/>
+                                                <constraint firstAttribute="trailing" secondItem="4ZW-QP-pYu" secondAttribute="trailing" constant="17" id="Ynr-U0-GY2"/>
                                                 <constraint firstItem="CXW-TP-pCx" firstAttribute="centerY" secondItem="J49-0z-GUe" secondAttribute="centerY" id="azT-FB-cEZ"/>
                                                 <constraint firstItem="92z-oL-7IC" firstAttribute="top" secondItem="F06-r2-Fnt" secondAttribute="bottom" id="duj-dz-43g"/>
                                                 <constraint firstItem="92z-oL-7IC" firstAttribute="leading" secondItem="CXW-TP-pCx" secondAttribute="trailing" constant="10" id="fK4-Qx-7dH"/>
+                                                <constraint firstItem="92z-oL-7IC" firstAttribute="top" secondItem="4ZW-QP-pYu" secondAttribute="bottom" constant="23" id="hjg-g3-2AG"/>
                                                 <constraint firstItem="F06-r2-Fnt" firstAttribute="trailing" secondItem="J49-0z-GUe" secondAttribute="trailingMargin" id="kA8-hv-uPV"/>
                                                 <constraint firstItem="92z-oL-7IC" firstAttribute="trailing" secondItem="J49-0z-GUe" secondAttribute="trailingMargin" id="mfH-xm-4fw"/>
                                                 <constraint firstItem="F06-r2-Fnt" firstAttribute="top" secondItem="J49-0z-GUe" secondAttribute="topMargin" id="vdK-Hm-hJR"/>
@@ -68,7 +77,7 @@
                                             <outlet property="recipeDescription" destination="92z-oL-7IC" id="Vxm-Z3-fiB"/>
                                             <outlet property="recipeImageView" destination="CXW-TP-pCx" id="sRz-bG-bqi"/>
                                             <outlet property="recipeTitle" destination="F06-r2-Fnt" id="G1o-sp-vis"/>
-                                            <segue destination="GUz-sh-UYB" kind="show" identifier="EditRecipeSegue" id="w75-4T-YiN"/>
+                                            <segue destination="GUz-sh-UYB" kind="show" identifier="editRecipeSegue" id="w75-4T-YiN"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -78,7 +87,7 @@
                                 </connections>
                             </tableView>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Re8-Le-kn8">
-                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                         </subviews>
@@ -98,21 +107,21 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="o5F-W1-xa1">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="GUz-sh-UYB" kind="show" identifier="AddRecipeSegue" id="Lp3-R9-Brj"/>
+                                <segue destination="GUz-sh-UYB" kind="show" identifier="addRecipeSegue" id="Lp3-R9-Brj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1195.6521739130435" y="41.517857142857139"/>
+            <point key="canvasLocation" x="1146" y="5"/>
         </scene>
         <!--RecipeVC-->
         <scene sceneID="QMf-H8-IYf">
             <objects>
                 <viewController id="GUz-sh-UYB" customClass="RecipeVC" customModule="FoodManChu" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0o9-bt-hXM">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prep Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGx-oc-d6k">
@@ -163,15 +172,19 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ma-tc-PtL">
-                                <rect key="frame" x="20" y="806" width="374" height="36"/>
+                                <rect key="frame" x="20" y="752" width="374" height="36"/>
                                 <color key="backgroundColor" red="0.080323077739999998" green="0.21182638409999999" blue="0.2289803624" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Save">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="saveButtonPressed:" destination="GUz-sh-UYB" eventType="touchUpInside" id="wDm-gT-NfN"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="saveSegue" id="Is6-qd-WSI"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Recipie Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="65z-sK-YEo">
-                                <rect key="frame" x="140" y="120" width="254" height="34"/>
+                                <rect key="frame" x="140" y="32" width="254" height="122"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -198,7 +211,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FVg-BH-f8D">
-                                <rect key="frame" x="20" y="120" width="100" height="60"/>
+                                <rect key="frame" x="20" y="32" width="100" height="148"/>
                                 <connections>
                                     <action selector="imageButtonPressed:" destination="GUz-sh-UYB" eventType="touchUpInside" id="8hd-GX-Taz"/>
                                 </connections>
@@ -262,18 +275,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kka-aB-Y5c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1989.8550724637682" y="41.517857142857139"/>
+            <point key="canvasLocation" x="2390" y="5"/>
         </scene>
         <!--IngredientsVC-->
         <scene sceneID="IjV-Js-BVH">
             <objects>
                 <tableViewController id="wNX-kr-RpV" customClass="IngredientsVC" customModule="FoodManChu" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="F6j-v1-Dsi">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IngredientsCell" textLabel="b8z-vv-9nv" style="IBUITableViewCellStyleDefault" id="tcZ-Yw-4Zm">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ingredientsCell" textLabel="b8z-vv-9nv" style="IBUITableViewCellStyleDefault" id="tcZ-Yw-4Zm">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tcZ-Yw-4Zm" id="gPg-bg-J4L">
@@ -309,6 +322,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="Gi4-UR-Jkg"/>
                                                 <constraint firstAttribute="width" constant="33" id="TuQ-xD-MsI"/>
                                             </constraints>
+                                            <color key="tintColor" systemColor="systemRedColor"/>
                                             <state key="normal" image="trash" catalog="system"/>
                                             <connections>
                                                 <action selector="trashPressed:" destination="G7I-5P-n6x" eventType="touchUpInside" id="asz-vw-bri"/>
@@ -345,7 +359,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="E0A-Qb-p1U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2776.811594202899" y="41.517857142857139"/>
+            <point key="canvasLocation" x="3314" y="5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="fQJ-tP-sVR">
@@ -371,19 +385,24 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yR9-wT-JJR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="41.517857142857139"/>
+            <point key="canvasLocation" x="141" y="5"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="w75-4T-YiN"/>
+        <segue reference="Lp3-R9-Brj"/>
+        <segue reference="Is6-qd-WSI"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="defaultImade" width="190" height="107"/>
+        <image name="doc.on.doc" catalog="system" width="116" height="128"/>
         <image name="right arrow" width="341" height="341"/>
         <image name="shrimpScampi" width="341" height="512"/>
         <image name="trash" catalog="system" width="121" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

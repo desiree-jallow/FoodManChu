@@ -22,6 +22,8 @@ class RecipeVC: UIViewController  {
     var imagePicker: UIImagePickerController!
     
     var categories = [Category]()
+    var ingredientsArray = [Ingredient]()
+    
     
     
     override func viewDidLoad() {
@@ -36,6 +38,23 @@ class RecipeVC: UIViewController  {
         
        
         // Do any additional setup after loading the view.
+    }
+    @IBAction func saveButtonPressed(_ sender: UIButton) {
+        let newRecipe = Recipe(context: Constants.context)
+        newRecipe.categoryType?.categoryName = categoryTextField.text
+        newRecipe.instructions = instructionsTextField.text
+        
+        let photo = Image(context: Constants.context)
+        photo.image = recipeImage.image
+        newRecipe.image = photo
+        
+        if let prepText = prepTextField.text, let doubleText = Double(prepText) {
+            newRecipe.prepTime = doubleText
+        }
+        for ingredient in ingredientsArray {
+            ingredient.addToRecipe(newRecipe)
+        }
+        
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {
@@ -52,17 +71,6 @@ class RecipeVC: UIViewController  {
        
     }
 
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     func generateCategories() {
         
