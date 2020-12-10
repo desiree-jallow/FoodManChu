@@ -43,6 +43,8 @@ class RecipeVC: UIViewController  {
         let newRecipe = Recipe(context: Constants.context)
         newRecipe.categoryType?.categoryName = categoryTextField.text
         newRecipe.instructions = instructionsTextField.text
+        newRecipe.recipeDescription = descTextField.text
+        newRecipe.recipeName = nameTextField.text
         
         let photo = Image(context: Constants.context)
         photo.image = recipeImage.image
@@ -54,7 +56,7 @@ class RecipeVC: UIViewController  {
         for ingredient in ingredientsArray {
             ingredient.addToRecipe(newRecipe)
         }
-        
+        Constants.appDelegate.saveContext()
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {
