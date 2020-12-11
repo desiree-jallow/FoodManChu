@@ -10,8 +10,8 @@ import CoreData
 
 class RecipeVC: UIViewController  {
 
-    @IBOutlet weak var instructionsTextField: UITextField!
-    @IBOutlet weak var descTextField: UITextField!
+    @IBOutlet weak var instructionsTextField: UITextView!
+    @IBOutlet weak var descTextField: UITextView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var prepTextField: UITextField!
     @IBOutlet weak var recipeImage: UIImageView!
@@ -19,7 +19,8 @@ class RecipeVC: UIViewController  {
     @IBOutlet weak var categoryTextField: UITextField!
     
     let picker = UIPickerView()
-    var imagePicker: UIImagePickerController!
+//    var imagePicker: UIImagePickerController!
+    var imagePicker = UIImagePickerController()
     
     var categories = [Category]()
     var ingredientsArray = [Ingredient]()
@@ -27,7 +28,8 @@ class RecipeVC: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePicker = UIImagePickerController()
+        setBorder(for: descTextField)
+        setBorder(for: instructionsTextField)
         imagePicker.delegate = self
         prepTextField.delegate = self
         categoryTextField.inputView = picker
@@ -62,11 +64,20 @@ class RecipeVC: UIViewController  {
         Constants.appDelegate.saveContext()
     }
     
+    //MARK: - Set textView border
+    func setBorder(for textView: UITextView) {
+        textView.layer.cornerRadius = 10
+        textView.layer.borderWidth = 1.0
+        textView.layer.borderColor = UIColor.systemGray4.cgColor
+    }
+    
     //MARK: - Load Fields when editing Recipe
     func loadFields(with recipe: Recipe) {
         descTextField.text = recipe.recipeDescription
+        descTextField.frame.size.width = descTextField.intrinsicContentSize.width
         categoryTextField.text = recipe.categoryType?.categoryName
         instructionsTextField.text = recipe.instructions
+        instructionsTextField.frame.size.width = instructionsTextField.intrinsicContentSize.width
         prepTextField.text = String(format: "%.0f", recipe.prepTime )
         recipeImage.image = recipe.image?.setImage as? UIImage
         nameTextField.text = recipe.recipeName

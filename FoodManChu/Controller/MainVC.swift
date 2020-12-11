@@ -18,18 +18,19 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
 //        generateDummyRecipe()
         fetchRecipes()
-//        deleteAll()
                 // Do any additional setup after loading the view.
     }
     
     func generateDummyRecipe() {
         
         let dummyRecipe = Recipe(context: Constants.context)
+        
         let photo = Image(context: Constants.context)
         photo.setImage = UIImage(named: "shrimpScampi")
+        dummyRecipe.image = photo
         
         dummyRecipe.recipeName = "Shrimp Scampi"
-        dummyRecipe.image = photo
+      
         dummyRecipe.recipeDescription = "A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes!"
         dummyRecipe.instructions = "1. Heat olive oil and 2 tablespoons of butter in a large pan or skillet. Add garlic and sauté until fragrant (about 30 seconds - 1 minute). Then add the shrimp, season with salt and pepper to taste and sauté for 1-2 minutes on one side (until just beginning to turn pink), then flip.\n 2. Pour in wine (or broth), add red pepper flakes (if using). Bring to a simmer for 1-2 minutes or until wine reduces by about half and the shrimp is cooked through (don't over cook your shrimp). \n 3. Stir in the remaining butter, lemon juice and parsley and take off heat immediately.\n 4. Serve over rice, pasta, garlic bread or steamed vegetables (cauliflower, broccoli, zucchini noodles)."
     
@@ -70,40 +71,25 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
             }
         }
     
-    func deleteAll() {
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
-           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
-
-           do {
-            try Constants.context.execute(deleteRequest)
-            try Constants.context.save()
-           } catch {
-               print ("There was an error")
-           }
-    }
-    
-    
+   
 //MARK: - Edit Recipe Segue
 override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //edit recipe segue
-        // Get the new view controller using segue.destination.
     let indexPath = tableView.indexPathForSelectedRow
     if let objects = controller.fetchedObjects, objects.count > 0 {
         selectedRecipe = objects[indexPath!.row]
-
     }
+    
     if segue.identifier == Constants.editRecipe {
         if let destination = segue.destination as? RecipeVC {
             
                 destination.recipeToEdit = selectedRecipe
-                
             }
         }
     }
 }
-    
-extension MainVC {
+
 //MARK: - NSFetchControllerDelegate
+extension MainVC {
 func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
     switch type {
     case .insert:
