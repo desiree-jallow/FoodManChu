@@ -16,7 +16,8 @@ class RecipeCell: UITableViewCell {
    
     
     func configureCell(recipe: Recipe) {
-        recipeImageView.image = UIImage(named: recipe.imageName ?? "defaultmade" )
+//        recipeImageView.image = UIImage(named: recipe.imageName ?? "defaultmade" )
+        recipeImageView.image = recipe.image?.setImage as? UIImage ?? UIImage(named: "default")
         recipeDescription.text = recipe.recipeDescription
         recipeTitle.text = recipe.recipeName
     }

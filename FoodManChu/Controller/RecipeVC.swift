@@ -23,8 +23,7 @@ class RecipeVC: UIViewController  {
     
     var categories = [Category]()
     var ingredientsArray = [Ingredient]()
-    
-    
+    var recipeToEdit: Recipe?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +34,13 @@ class RecipeVC: UIViewController  {
         picker.delegate = self
 //        generateCategories()
         fetchCategories()
+        if recipeToEdit != nil {
+            loadFields(with: recipeToEdit!)
+        }
         
-       
         // Do any additional setup after loading the view.
     }
+    
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         let newRecipe = Recipe(context: Constants.context)
         newRecipe.categoryType?.categoryName = categoryTextField.text
@@ -47,7 +49,8 @@ class RecipeVC: UIViewController  {
         newRecipe.recipeName = nameTextField.text
         
         let photo = Image(context: Constants.context)
-        photo.image = recipeImage.image
+        photo.setImage = recipeImage.image
+//        newRecipe.image = photo.image as? Image
         newRecipe.image = photo
         
         if let prepText = prepTextField.text, let doubleText = Double(prepText) {
@@ -57,6 +60,19 @@ class RecipeVC: UIViewController  {
             ingredient.addToRecipe(newRecipe)
         }
         Constants.appDelegate.saveContext()
+    }
+    
+    //MARK: - Load Fields when editing Recipe
+    func loadFields(with recipe: Recipe) {
+        descTextField.text = recipe.recipeDescription
+        categoryTextField.text = recipe.categoryType?.categoryName
+        instructionsTextField.text = recipe.instructions
+        prepTextField.text = String(format: "%.0f", recipe.prepTime )
+        recipeImage.image = recipe.image?.setImage as? UIImage
+        nameTextField.text = recipe.recipeName
+        if let prepText = Float(prepTextField.text ?? "") {
+            prepSlider.setValue(prepText, animated: true)
+        }
     }
     
     @IBAction func sliderChanged(_ sender: UISlider) {

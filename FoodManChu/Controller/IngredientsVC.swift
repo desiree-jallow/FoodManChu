@@ -25,6 +25,7 @@ class IngredientsVC: UITableViewController {
     }
 //MARK: - Add ingredient
     @IBAction func addIngredient(_ sender: UIBarButtonItem) {
+        
         var textField = UITextField()
         
         let alertController = UIAlertController(title: "", message: "Add Ingredient", preferredStyle: .alert)
@@ -50,6 +51,13 @@ class IngredientsVC: UITableViewController {
         alertController.addAction(cancelAction)
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+   //MARK: - Reset Ingredients
+    func resetIngredients() {
+        for ingredient in ingredients{
+            ingredient.isSelected = false
+        }
     }
     
     // MARK: - Table view data source and delegate
