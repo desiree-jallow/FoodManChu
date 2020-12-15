@@ -167,7 +167,7 @@
                                 </constraints>
                                 <state key="normal" image="right arrow"/>
                                 <connections>
-                                    <segue destination="wNX-kr-RpV" kind="show" id="gMA-EL-ubd"/>
+                                    <segue destination="wNX-kr-RpV" kind="show" identifier="ingredientsSegue" id="gMA-EL-ubd"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ma-tc-PtL">

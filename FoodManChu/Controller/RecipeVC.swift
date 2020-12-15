@@ -35,6 +35,7 @@ class RecipeVC: UIViewController  {
         categoryTextField.inputView = picker
         picker.delegate = self
 //        generateCategories()
+//        delete()
         fetchCategories()
         if recipeToEdit != nil {
             loadFields(with: recipeToEdit!)
@@ -44,6 +45,7 @@ class RecipeVC: UIViewController  {
     }
     
     @IBAction func saveButtonPressed(_ sender: UIButton) {
+        if recipeToEdit == nil {
         let newRecipe = Recipe(context: Constants.context)
         newRecipe.categoryType?.categoryName = categoryTextField.text
         newRecipe.instructions = instructionsTextField.text
@@ -52,78 +54,49 @@ class RecipeVC: UIViewController  {
         
         let photo = Image(context: Constants.context)
         photo.setImage = recipeImage.image
-//        newRecipe.image = photo.image as? Image
         newRecipe.image = photo
         
         if let prepText = prepTextField.text, let doubleText = Double(prepText) {
             newRecipe.prepTime = doubleText
         }
         for ingredient in ingredientsArray {
+            ingredient.isSelected = true
             ingredient.addToRecipe(newRecipe)
         }
-        Constants.appDelegate.saveContext()
+            do {
+                try Constants.context.save()
+            } catch  {
+                print(error)
+            }
+            
     }
+}
     
-    //MARK: - Set textView border
-    func setBorder(for textView: UITextView) {
-        textView.layer.cornerRadius = 10
-        textView.layer.borderWidth = 1.0
-        textView.layer.borderColor = UIColor.systemGray4.cgColor
-    }
-    
-    //MARK: - Load Fields when editing Recipe
-    func loadFields(with recipe: Recipe) {
-        descTextField.text = recipe.recipeDescription
-        descTextField.frame.size.width = descTextField.intrinsicContentSize.width
-        categoryTextField.text = recipe.categoryType?.categoryName
-        instructionsTextField.text = recipe.instructions
-        instructionsTextField.frame.size.width = instructionsTextField.intrinsicContentSize.width
-        prepTextField.text = String(format: "%.0f", recipe.prepTime )
-        recipeImage.image = recipe.image?.setImage as? UIImage
-        nameTextField.text = recipe.recipeName
-        if let prepText = Float(prepTextField.text ?? "") {
-            prepSlider.setValue(prepText, animated: true)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if recipeToEdit != nil {
+            if segue.identifier == Constants.ingredientsSegue {
+                if let destination = segue.destination as? IngredientsVC {
+                    destination.recipe = recipeToEdit
+                }
+            }
         }
     }
+    
     
     @IBAction func sliderChanged(_ sender: UISlider) {
         let newValue = Int(sender.value/5) * 5
         sender.setValue(Float(newValue), animated: false)
         prepTextField.text = String(newValue)
-    
     }
     
-    //MARK: - UIImagePicker Delegate
+    
+//MARK: - UIImagePicker Delegate
      
     @IBAction func imageButtonPressed(_ sender: UIButton) {
         present(imagePicker, animated: true, completion: nil)
-       
     }
-
-    
-    func generateCategories() {
-        
-        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
-        for category in categories {
-            let myCategory = Category(context: Constants.context)
-            myCategory.categoryName = category
-            Constants.appDelegate.saveContext()
-        }
-    }
-    
-    func fetchCategories() {
-        
-            let fetchRequest = NSFetchRequest<Category>(entityName: "Category")
-            
-            do {
-                categories = try Constants.context.fetch(fetchRequest)
-            } catch  {
-                print(error.localizedDescription)
-            }
-            
-        }
-    }
-//MARK: - UIImage Picker
+}
+   
 extension RecipeVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
@@ -163,4 +136,64 @@ extension RecipeVC: UITextFieldDelegate {
         }
         return true
     }
+}
+
+//MARK: - Helper Functions
+extension RecipeVC {
+    //MARK: - Set textView border
+    func setBorder(for textView: UITextView) {
+        textView.layer.cornerRadius = 10
+        textView.layer.borderWidth = 1.0
+        textView.layer.borderColor = UIColor.systemGray4.cgColor
+    }
+    
+    //MARK: - Load Fields when editing Recipe
+    func loadFields(with recipe: Recipe) {
+        descTextField.text = recipe.recipeDescription
+        descTextField.frame.size.width = descTextField.intrinsicContentSize.width
+        categoryTextField.text = recipe.categoryType?.categoryName
+        instructionsTextField.text = recipe.instructions
+        instructionsTextField.frame.size.width = instructionsTextField.intrinsicContentSize.width
+        prepTextField.text = String(format: "%.0f", recipe.prepTime )
+        recipeImage.image = recipe.image?.setImage as? UIImage
+        nameTextField.text = recipe.recipeName
+        if let prepText = Float(prepTextField.text ?? "") {
+            prepSlider.setValue(prepText, animated: true)
+        }
+    }
+    
+    func generateCategories() {
+        
+        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
+        for category in categories {
+            let myCategory = Category(context: Constants.context)
+            myCategory.categoryName = category
+            Constants.appDelegate.saveContext()
+        }
+    }
+    
+    func fetchCategories() {
+        
+            let fetchRequest = NSFetchRequest<Category>(entityName: "Category")
+            
+            do {
+                categories = try Constants.context.fetch(fetchRequest)
+            } catch  {
+                print(error.localizedDescription)
+            }
+            
+        }
+    
+    func delete() {
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
+           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+
+           do {
+            try Constants.context.execute(deleteRequest)
+            try Constants.context.save()
+           } catch {
+               print ("There was an error")
+           }
+    }
+    
 }

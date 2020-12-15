@@ -8,21 +8,22 @@
 import UIKit
 import CoreData
 
-class IngredientsVC: UITableViewController {
+class IngredientsVC: UITableViewController, NSFetchedResultsControllerDelegate {
     
     
-    var ingredients = [Ingredient]()
-
+//    var ingredients = [Ingredient]()
+    var controller: NSFetchedResultsController<Ingredient>!
+    var recipe: Recipe?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateIngredients()
-        fetchIngredients()
+        fetchIngredients(for: recipe)
 //        delete()
         navigationController?.delegate = self
         Constants.context.mergePolicy  = NSMergeByPropertyStoreTrumpMergePolicy
-
-
     }
+    
 //MARK: - Add ingredient
     @IBAction func addIngredient(_ sender: UIBarButtonItem) {
         
@@ -41,7 +42,7 @@ class IngredientsVC: UITableViewController {
             newIngredient.ingredientName = textField.text
             newIngredient.isUserCreated = true
             Constants.appDelegate.saveContext()
-            fetchIngredients()
+            fetchIngredients(for: recipe)
             tableView.reloadData()
         }
         
@@ -53,25 +54,21 @@ class IngredientsVC: UITableViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-   //MARK: - Reset Ingredients
-    func resetIngredients() {
-        for ingredient in ingredients{
-            ingredient.isSelected = false
-        }
-    }
-    
     // MARK: - Table view data source and delegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ingredients.count
+        if let sections = controller.sections {
+            let sectionInfo = sections[section]
+            return sectionInfo.numberOfObjects
+        }
+        return 0
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let autoIngredientsCell = tableView.dequeueReusableCell(withIdentifier: Constants.ingredientsReuseCell, for: indexPath)
         
         let userIngredientsCell = tableView.dequeueReusableCell(withIdentifier: Constants.userIngredientsCell, for: indexPath) as! UserIngredientsCell
         
-        let ingredient = ingredients[indexPath.row]
+        let ingredient = controller.object(at: indexPath)
         
         if ingredient.isUserCreated == true {
             userIngredientsCell.accessoryType = ingredient.isSelected ? .checkmark : .none
@@ -88,7 +85,7 @@ class IngredientsVC: UITableViewController {
     }
     //MARK: - Add checkmark to selected ingredient
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let ingredient = ingredients[indexPath.row]
+        let ingredient = controller.object(at: indexPath)
         ingredient.isSelected.toggle()
         Constants.appDelegate.saveContext()
         tableView.reloadData()
@@ -97,24 +94,63 @@ class IngredientsVC: UITableViewController {
     }
     
 }
+
+//MARK: - NSFetchControllerDelegate
+extension IngredientsVC {
+func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    switch type {
+    case .insert:
+        if let indexPath = newIndexPath {
+            tableView.insertRows(at: [indexPath], with: .fade)
+        }
+    case .delete:
+        if let indexPath = indexPath {
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    case .update:
+        if let indexPath = indexPath {
+            let ingredient = controller.object(at: indexPath)
+            if (ingredient as! Ingredient).isUserCreated {
+                let userCell = tableView.cellForRow(at: indexPath) as! UserIngredientsCell
+                userCell.configureCell(ingredient: anObject as! Ingredient)
+            } else {
+                let autoCell = tableView.cellForRow(at: indexPath)
+                autoCell?.textLabel?.text = (anObject as! Ingredient).ingredientName
+            }
+        }
+    case .move:
+        if let indexPath = indexPath {
+            tableView.insertRows(at: [indexPath], with: .fade)
+        }
+    @unknown default:
+        break
+    }
+}
+
+func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    tableView.beginUpdates()
+}
+func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    tableView.endUpdates()
+    }
+}
 //MARK: - Save Ingredients to Recipe
 extension IngredientsVC: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        for ingredient in ingredients {
+        for ingredient in controller.fetchedObjects! {
             if ingredient.isSelected {
                 (viewController as? RecipeVC)?.ingredientsArray.append(ingredient)
             }
         }
-        
     }
 }
 //MARK: - Delete ingredient
 extension IngredientsVC: CustomCellDelegate {
     func customCell(cell: UserIngredientsCell, didTappedThe button: UIButton?) {
         let indexPath = tableView.indexPath(for: cell)
-        let ingredient = ingredients[indexPath!.row]
+        let ingredient = controller.object(at: indexPath!)
+        
         Constants.context.delete(ingredient)
-        ingredients.remove(at: indexPath!.row)
         Constants.appDelegate.saveContext()
         tableView.reloadData()
     }
@@ -133,16 +169,28 @@ extension IngredientsVC: CustomCellDelegate {
         }
     }
     
-    func fetchIngredients() {
-        let fetchRequest = NSFetchRequest<Ingredient>(entityName: "Ingredient")
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "ingredientName", ascending: true)]
+        func fetchIngredients(for recipe: Recipe?) {
+        let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
+        let sort = NSSortDescriptor(key: "ingredientName", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        let controller = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: Constants.context, sectionNameKeyPath: nil, cacheName: nil)
+        self.controller = controller
+        controller.delegate = self
         
         do {
-            ingredients = try Constants.context.fetch(fetchRequest)
+            try controller.performFetch()
+                for ingredient in controller.fetchedObjects! {
+                    if recipe == nil {
+                        ingredient.isSelected = false
+                    } else if recipe?.ingredient?.contains(ingredient) == true {
+                        ingredient.isSelected = true
+                    }
+            }
         } catch  {
             print(error.localizedDescription)
             }
         }
+        
         
         func delete() {
             let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Ingredient")

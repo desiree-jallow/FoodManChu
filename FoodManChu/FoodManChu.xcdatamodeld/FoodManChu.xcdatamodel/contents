@@ -20,7 +20,6 @@
         </uniquenessConstraints>
     </entity>
     <entity name="Recipe" representedClassName="Recipe" syncable="YES" codeGenerationType="class">
-        <attribute name="imageName" optional="YES" attributeType="String"/>
         <attribute name="instructions" optional="YES" attributeType="String"/>
         <attribute name="prepTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="recipeDescription" optional="YES" attributeType="String"/>
@@ -33,6 +32,6 @@
         <element name="Category" positionX="-319.810302734375" positionY="-29.12640380859375" width="128" height="73"/>
         <element name="Image" positionX="-44.88641357421875" positionY="16.02220153808594" width="128" height="73"/>
         <element name="Ingredient" positionX="173.6875" positionY="90.47265625" width="128" height="89"/>
-        <element name="Recipe" positionX="-144.15234375" positionY="263.76953125" width="128" height="163"/>
+        <element name="Recipe" positionX="-144.15234375" positionY="263.76953125" width="128" height="134"/>
     </elements>
 </model>

@@ -11,14 +11,16 @@ import CoreData
 class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
   
     var controller: NSFetchedResultsController<Recipe>!
+    var ingredients = [Ingredient]()
     var selectedRecipe: Recipe?
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateDummyRecipe()
+//        delete()
+//        generateIngredients()
         fetchRecipes()
-                // Do any additional setup after loading the view.
     }
     
     func generateDummyRecipe() {
@@ -36,26 +38,18 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
     
         dummyRecipe.prepTime = 10.0
         
-        let categoryFetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        let categoryPredicate = NSPredicate(format: "Meat == %@", "Meat")
-        categoryFetchRequest.predicate = categoryPredicate
+        fetchCategory(for: dummyRecipe)
+        fetchIngredients(for: dummyRecipe)
         
         do {
-            let category = try Constants.context.fetch(categoryFetchRequest)
-            category[0].addToRecipe(dummyRecipe)
+            try Constants.context.save()
         } catch  {
-            print(error.localizedDescription)
+            print(error)
         }
         
-        
-//        let ingredient = Ingredient(context: Constants.context)
-//        ingredient.ingredientName = "shrimp"
-//        dummyRecipe.addToIngredient(ingredient)
-        
-        Constants.appDelegate.saveContext()
     }
-
     
+
     func fetchRecipes() {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         let sort = NSSortDescriptor(key: "recipeName", ascending: true)
@@ -71,18 +65,79 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
             }
         }
     
-   
-//MARK: - Edit Recipe Segue
-override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    let indexPath = tableView.indexPathForSelectedRow
-    if let objects = controller.fetchedObjects, objects.count > 0 {
-        selectedRecipe = objects[indexPath!.row]
+    func fetchCategory(for recipe: Recipe) {
+        let categoryFetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
+        
+        do {
+            let categories = try Constants.context.fetch(categoryFetchRequest)
+            for category in categories {
+                if category.categoryName == "Meat" {
+                    category.addToRecipe(recipe)
+                }
+            }
+        } catch  {
+            print(error.localizedDescription)
+        }
     }
     
+    func fetchIngredients(for recipe: Recipe) {
+        let ingredientFetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
+        let shrimp = "shrimp"
+        let oliveOil = "olive oil"
+        let butter = "butter"
+        let salt = "salt"
+        let pepper = "pepper"
+        let garlic = "garlic"
+        
+        
+        do {
+            ingredients = try Constants.context.fetch(ingredientFetchRequest)
+
+            for ingredient in ingredients {
+                if ingredient.ingredientName == shrimp || ingredient.ingredientName == oliveOil || ingredient.ingredientName == butter || ingredient.ingredientName == salt || ingredient.ingredientName == pepper || ingredient.ingredientName == garlic {
+//                    ingredient.isSelected = true
+                    ingredient.addToRecipe(recipe)
+                }
+                    
+            }
+        } catch  {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func generateIngredients() {
+        let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
+    
+    for ingredient in ingredientsList {
+        let myIngredient = Ingredient(context: Constants.context)
+        myIngredient.ingredientName = ingredient
+        Constants.appDelegate.saveContext()
+    }
+}
+    
+    func delete() {
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
+           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+
+           do {
+            try Constants.context.execute(deleteRequest)
+            try Constants.context.save()
+           } catch {
+               print ("There was an error")
+           }
+    }
+    
+ 
+
+//MARK: - Edit Recipe Segue
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == Constants.editRecipe {
         if let destination = segue.destination as? RecipeVC {
-            
+            let indexPath = tableView.indexPathForSelectedRow
+            if let objects = controller.fetchedObjects, objects.count > 0 {
+                selectedRecipe = objects[indexPath!.row]
                 destination.recipeToEdit = selectedRecipe
+                }
             }
         }
     }
@@ -146,7 +201,18 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         return 150
     }
     
-        
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let recipeToDelete = controller.object(at: indexPath)
+            Constants.context.delete(recipeToDelete)
+//            Constants.appDelegate.saveContext()
+            do {
+                try Constants.context.save()
+            } catch  {
+                print(error)
+            }
+            
+        }
+    }
 }
-
 
