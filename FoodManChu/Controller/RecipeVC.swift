@@ -19,7 +19,6 @@ class RecipeVC: UIViewController  {
     @IBOutlet weak var categoryTextField: UITextField!
     
     let picker = UIPickerView()
-//    var imagePicker: UIImagePickerController!
     var imagePicker = UIImagePickerController()
     
     var categories = [Category]()
@@ -35,7 +34,8 @@ class RecipeVC: UIViewController  {
         categoryTextField.inputView = picker
         picker.delegate = self
 //        generateCategories()
-//        delete()
+//        deleteCategories()
+        Constants.context.mergePolicy  = NSMergeByPropertyStoreTrumpMergePolicy
         fetchCategories()
         if recipeToEdit != nil {
             loadFields(with: recipeToEdit!)
@@ -45,31 +45,38 @@ class RecipeVC: UIViewController  {
     }
     
     @IBAction func saveButtonPressed(_ sender: UIButton) {
-        if recipeToEdit == nil {
-        let newRecipe = Recipe(context: Constants.context)
-        newRecipe.categoryType?.categoryName = categoryTextField.text
-        newRecipe.instructions = instructionsTextField.text
-        newRecipe.recipeDescription = descTextField.text
-        newRecipe.recipeName = nameTextField.text
+        var recipe: Recipe!
+        
+        if recipeToEdit != nil {
+            recipe = recipeToEdit
+        } else {
+            recipe = Recipe(context: Constants.context)
+        }
+           
+        let selectedCategory = categoryTextField.text
+        recipe.categoryType?.categoryName = selectedCategory
+            for category in categories {
+                if category.categoryName == selectedCategory {
+                    category.addToRecipe(recipe)
+                }
+            }
+            
+        recipe.instructions = instructionsTextField.text
+        recipe.recipeDescription = descTextField.text
+        recipe.recipeName = nameTextField.text
         
         let photo = Image(context: Constants.context)
         photo.setImage = recipeImage.image
-        newRecipe.image = photo
+        recipe.image = photo
         
         if let prepText = prepTextField.text, let doubleText = Double(prepText) {
-            newRecipe.prepTime = doubleText
+            recipe.prepTime = doubleText
         }
         for ingredient in ingredientsArray {
             ingredient.isSelected = true
-            ingredient.addToRecipe(newRecipe)
+            ingredient.addToRecipe(recipe)
         }
-            do {
-                try Constants.context.save()
-            } catch  {
-                print(error)
-            }
-            
-    }
+        Constants.appDelegate.saveContext()
 }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -168,7 +175,7 @@ extension RecipeVC {
         for category in categories {
             let myCategory = Category(context: Constants.context)
             myCategory.categoryName = category
-            Constants.appDelegate.saveContext()
+            saveData()
         }
     }
     
@@ -184,7 +191,7 @@ extension RecipeVC {
             
         }
     
-    func delete() {
+    func deleteCategories() {
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
            let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
@@ -194,6 +201,14 @@ extension RecipeVC {
            } catch {
                print ("There was an error")
            }
+    }
+    
+    func saveData() {
+        do {
+            try Constants.context.save()
+        } catch  {
+            print(error.localizedDescription)
+        }
     }
     
 }

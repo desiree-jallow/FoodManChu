@@ -19,7 +19,7 @@ class IngredientsVC: UITableViewController, NSFetchedResultsControllerDelegate {
         super.viewDidLoad()
 //        generateIngredients()
         fetchIngredients(for: recipe)
-//        delete()
+//        deleteIngredients()
         navigationController?.delegate = self
         Constants.context.mergePolicy  = NSMergeByPropertyStoreTrumpMergePolicy
     }
@@ -111,11 +111,8 @@ func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, 
         if let indexPath = indexPath {
             let ingredient = controller.object(at: indexPath)
             if (ingredient as! Ingredient).isUserCreated {
-                let userCell = tableView.cellForRow(at: indexPath) as! UserIngredientsCell
-                userCell.configureCell(ingredient: anObject as! Ingredient)
-            } else {
-                let autoCell = tableView.cellForRow(at: indexPath)
-                autoCell?.textLabel?.text = (anObject as! Ingredient).ingredientName
+                let userCell = tableView.cellForRow(at: indexPath) as? UserIngredientsCell
+                userCell?.configureCell(ingredient: anObject as! Ingredient)
             }
         }
     case .move:
@@ -192,7 +189,7 @@ extension IngredientsVC: CustomCellDelegate {
         }
         
         
-        func delete() {
+        func deleteIngredients() {
             let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Ingredient")
                let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 

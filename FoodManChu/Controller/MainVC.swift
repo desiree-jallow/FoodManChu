@@ -18,7 +18,7 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        generateDummyRecipe()
-//        delete()
+//        deleteRecipes()
 //        generateIngredients()
         fetchRecipes()
     }
@@ -41,11 +41,7 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
         fetchCategory(for: dummyRecipe)
         fetchIngredients(for: dummyRecipe)
         
-        do {
-            try Constants.context.save()
-        } catch  {
-            print(error)
-        }
+       saveData()
         
     }
     
@@ -105,28 +101,35 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
         }
     }
     
-    func generateIngredients() {
-        let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
+//    func generateIngredients() {
+//        let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
+//    
+//    for ingredient in ingredientsList {
+//        let myIngredient = Ingredient(context: Constants.context)
+//        myIngredient.ingredientName = ingredient
+//        Constants.appDelegate.saveContext()
+//    }
+//}
     
-    for ingredient in ingredientsList {
-        let myIngredient = Ingredient(context: Constants.context)
-        myIngredient.ingredientName = ingredient
-        Constants.appDelegate.saveContext()
-    }
-}
-    
-    func delete() {
+    func deleteRecipes() {
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
            let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
 
            do {
             try Constants.context.execute(deleteRequest)
-            try Constants.context.save()
+                saveData()
            } catch {
                print ("There was an error")
            }
     }
     
+    func saveData() {
+        do {
+            try Constants.context.save()
+        } catch  {
+            print(error.localizedDescription)
+        }
+    }
  
 
 //MARK: - Edit Recipe Segue
@@ -205,14 +208,14 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             let recipeToDelete = controller.object(at: indexPath)
             Constants.context.delete(recipeToDelete)
-//            Constants.appDelegate.saveContext()
-            do {
-                try Constants.context.save()
-            } catch  {
-                print(error)
-            }
-            
+                saveData()
         }
+    }
+}
+
+extension MainVC {
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+        
     }
 }
 
