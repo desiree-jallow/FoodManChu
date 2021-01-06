@@ -16,7 +16,7 @@ class UserIngredientsCell: UITableViewCell {
     
     weak var cellDelegate:CustomCellDelegate?
     
-    
+    //tells delegate when the trash can button is pressed
     @IBAction func trashPressed(_ sender: UIButton) {
         cellDelegate?.customCell(cell: self, didTappedThe: sender)
         

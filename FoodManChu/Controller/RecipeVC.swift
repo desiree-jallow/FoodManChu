@@ -78,22 +78,23 @@ class RecipeVC: UIViewController  {
             ingredient.isSelected = true
             ingredient.addToRecipe(recipe)
         }
-        print(recipe.ingredient?.allObjects)
+        //reset ingredients array
         ingredientsArray.removeAll()
         Constants.appDelegate.saveContext()
 }
-    //make sure the correct ingredients are checked
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if recipeToEdit != nil {
             if segue.identifier == Constants.ingredientsSegue {
                 if let destination = segue.destination as? IngredientsVC {
+                    //set recipe in IngredientsVC to recipeToEdit
                     destination.recipe = recipeToEdit
                 }
             }
         }
     }
     
-    
+    //set slider to increment of 5
     @IBAction func sliderChanged(_ sender: UISlider) {
         let newValue = Int(sender.value/5) * 5
         sender.setValue(Float(newValue), animated: false)
@@ -140,7 +141,7 @@ extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
 //MARK: - UITextFieldDelegate
 extension RecipeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+        //set slider when user types in number
         if let text = prepTextField.text {
             let value = Float(text) ?? 240.0
             prepSlider.setValue(value, animated: true)
@@ -152,14 +153,14 @@ extension RecipeVC: UITextFieldDelegate {
 
 //MARK: - Helper Functions
 extension RecipeVC {
-    //MARK: - Set textView border
+   // set text view border
     func setBorder(for textView: UITextView) {
         textView.layer.cornerRadius = 10
         textView.layer.borderWidth = 1.0
         textView.layer.borderColor = UIColor.systemGray4.cgColor
     }
     
-    //MARK: - Load Fields when editing Recipe
+    // load fields when editing recipe
     func loadFields(with recipe: Recipe) {
         descTextField.text = recipe.recipeDescription
         descTextField.frame.size.width = descTextField.intrinsicContentSize.width
@@ -174,16 +175,6 @@ extension RecipeVC {
         }
     }
     
-//    func generateCategories() {
-//
-//        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
-//        for category in categories {
-//            let myCategory = Category(context: Constants.context)
-//            myCategory.categoryName = category
-//            saveData()
-//        }
-//    }
-    
     func fetchCategories() {
         
             let fetchRequest = NSFetchRequest<Category>(entityName: "Category")
@@ -196,24 +187,29 @@ extension RecipeVC {
             
         }
     
-    func deleteCategories() {
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
-           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
-
-           do {
-            try Constants.context.execute(deleteRequest)
-            try Constants.context.save()
-           } catch {
-               print ("There was an error")
-           }
-    }
+//    func generateCategories() {
+//
+//        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
+//        for category in categories {
+//            let myCategory = Category(context: Constants.context)
+//            myCategory.categoryName = category
+//            saveData()
+//        }
+//    }
     
-    func saveData() {
-        do {
-            try Constants.context.save()
-        } catch  {
-            print(error.localizedDescription)
-        }
-    }
+
+    
+//    func deleteCategories() {
+//        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
+//           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
+//
+//           do {
+//            try Constants.context.execute(deleteRequest)
+//            try Constants.context.save()
+//           } catch {
+//               print ("There was an error")
+//           }
+//    }
+    
     
 }

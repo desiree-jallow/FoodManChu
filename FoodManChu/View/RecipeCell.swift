@@ -18,6 +18,7 @@ class RecipeCell: UITableViewCell {
     
     weak var recipeDelegate: RecipeCellDelegate?
     
+    //tells the delegate when the copy button was pressed
     @IBAction func copyPressed(_ sender: UIButton) {
        recipeDelegate?.recipeCell(cell: self, didTappedThe: sender)
     }
