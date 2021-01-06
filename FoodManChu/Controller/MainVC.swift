@@ -11,8 +11,9 @@ import CoreData
 class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
   
     var controller: NSFetchedResultsController<Recipe>!
-    var ingredients = [Ingredient]()
     var selectedRecipe: Recipe?
+    var recipe: Recipe?
+    
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
@@ -20,32 +21,49 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
 //        generateDummyRecipe()
 //        deleteRecipes()
 //        generateIngredients()
+//        generateCategories()
         fetchRecipes()
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if(!Constants.appDelegate.hasAlreadyLaunched){
+             
+            //set hasAlreadyLaunched to false
+            Constants.appDelegate.setHasAlreadyLaunched()
+                //generate dummyRecipe
+                generateIngredients()
+                generateCategories()
+                generateDummyRecipe()
+        }
     }
     
     func generateDummyRecipe() {
+            let dummyRecipe = Recipe(context: Constants.context)
+            let photo = Image(context: Constants.context)
+            photo.setImage = UIImage(named: "shrimpScampi")
+            dummyRecipe.image = photo
+            
+            dummyRecipe.recipeName = "Shrimp Scampi"
+          
+            dummyRecipe.recipeDescription = "A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes!"
+            dummyRecipe.instructions = "1. Heat olive oil and 2 tablespoons of butter in a large pan or skillet. Add garlic and sauté until fragrant (about 30 seconds - 1 minute). Then add the shrimp, season with salt and pepper to taste and sauté for 1-2 minutes on one side (until just beginning to turn pink), then flip.\n \n 2. Pour in wine (or broth), add red pepper flakes (if using). Bring to a simmer for 1-2 minutes or until wine reduces by about half and the shrimp is cooked through (don't over cook your shrimp). \n \n 3. Stir in the remaining butter, lemon juice and parsley and take off heat immediately.\n \n 4. Serve over rice, pasta, garlic bread or steamed vegetables (cauliflower, broccoli, zucchini noodles)."
         
-        let dummyRecipe = Recipe(context: Constants.context)
-        
-        let photo = Image(context: Constants.context)
-        photo.setImage = UIImage(named: "shrimpScampi")
-        dummyRecipe.image = photo
-        
-        dummyRecipe.recipeName = "Shrimp Scampi"
-      
-        dummyRecipe.recipeDescription = "A garlic buttery scampi sauce with a hint of white wine & lemon in less than 10 minutes!"
-        dummyRecipe.instructions = "1. Heat olive oil and 2 tablespoons of butter in a large pan or skillet. Add garlic and sauté until fragrant (about 30 seconds - 1 minute). Then add the shrimp, season with salt and pepper to taste and sauté for 1-2 minutes on one side (until just beginning to turn pink), then flip.\n 2. Pour in wine (or broth), add red pepper flakes (if using). Bring to a simmer for 1-2 minutes or until wine reduces by about half and the shrimp is cooked through (don't over cook your shrimp). \n 3. Stir in the remaining butter, lemon juice and parsley and take off heat immediately.\n 4. Serve over rice, pasta, garlic bread or steamed vegetables (cauliflower, broccoli, zucchini noodles)."
-    
-        dummyRecipe.prepTime = 10.0
-        
-        fetchCategory(for: dummyRecipe)
-        fetchIngredients(for: dummyRecipe)
-        
-       saveData()
+            dummyRecipe.prepTime = 10.0
+            
+            recipe = dummyRecipe
+            fetchCategory()
+            fetchIngredients()
+            
+           saveData()
         
     }
     
-
+    
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+        
+    }
+    
     func fetchRecipes() {
         let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
         let sort = NSSortDescriptor(key: "recipeName", ascending: true)
@@ -59,68 +77,69 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
         } catch  {
             print(error.localizedDescription)
             }
+        Constants.appDelegate.saveContext()
         }
     
-    func fetchCategory(for recipe: Recipe) {
+    func fetchCategory() {
         let categoryFetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        
+        let predicate = NSPredicate(format: "categoryName == %@", "Meat")
+        categoryFetchRequest.predicate = predicate
         do {
             let categories = try Constants.context.fetch(categoryFetchRequest)
             for category in categories {
-                if category.categoryName == "Meat" {
-                    category.addToRecipe(recipe)
-                }
+                    category.addToRecipe(recipe!)
             }
         } catch  {
             print(error.localizedDescription)
         }
+        
+        Constants.appDelegate.saveContext()
     }
     
-    func fetchIngredients(for recipe: Recipe) {
+    func fetchIngredients() {
         let ingredientFetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()
-        let shrimp = "shrimp"
-        let oliveOil = "olive oil"
-        let butter = "butter"
-        let salt = "salt"
-        let pepper = "pepper"
-        let garlic = "garlic"
         
+        let ingredientsArray = ["shrimp", "olive oil", "butter", "salt", "pepper", "garlic"]
+        
+        
+            let predicate = NSPredicate(format: "ingredientName IN %@", ingredientsArray)
+            ingredientFetchRequest.predicate = predicate
+        
+//        let predicate = NSPredicate(format: "ingredientName IN %@", argumentArray: ingredientsArray)
         
         do {
-            ingredients = try Constants.context.fetch(ingredientFetchRequest)
-
+            let ingredients = try Constants.context.fetch(ingredientFetchRequest)
             for ingredient in ingredients {
-                if ingredient.ingredientName == shrimp || ingredient.ingredientName == oliveOil || ingredient.ingredientName == butter || ingredient.ingredientName == salt || ingredient.ingredientName == pepper || ingredient.ingredientName == garlic {
-//                    ingredient.isSelected = true
-                    ingredient.addToRecipe(recipe)
-                }
-                    
+                ingredient.isSelected = true
+                ingredient.addToRecipe(recipe!)
             }
         } catch  {
             print(error.localizedDescription)
         }
+
+        Constants.appDelegate.saveContext()
     }
     
-//    func generateIngredients() {
-//        let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
-//    
-//    for ingredient in ingredientsList {
-//        let myIngredient = Ingredient(context: Constants.context)
-//        myIngredient.ingredientName = ingredient
-//        Constants.appDelegate.saveContext()
-//    }
-//}
+    func generateIngredients() {
+        
+            let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
+        
+        for ingredient in ingredientsList {
+            let myIngredient = Ingredient(context: Constants.context)
+            myIngredient.ingredientName = ingredient
+            Constants.appDelegate.saveContext()
+    }
+}
     
-    func deleteRecipes() {
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Recipe")
-           let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
-
-           do {
-            try Constants.context.execute(deleteRequest)
+    func generateCategories() {
+        
+            let categoriesList = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
+            for category in categoriesList {
+                let myCategory = Category(context: Constants.context)
+                myCategory.categoryName = category
                 saveData()
-           } catch {
-               print ("There was an error")
-           }
+            
+        }
     }
     
     func saveData() {
@@ -144,6 +163,25 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             }
         }
     }
+}
+//MARK: - Copy Recipe
+extension MainVC: RecipeCellDelegate {
+    func recipeCell(cell: RecipeCell, didTappedThe button: UIButton?) {
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        let recipeToCopy = controller.object(at: indexPath)
+        let newRecipe = Recipe(context: Constants.context)
+        newRecipe.categoryType?.categoryName = recipeToCopy.categoryType?.categoryName
+        newRecipe.image = recipeToCopy.image
+        newRecipe.ingredient = recipeToCopy.ingredient
+        newRecipe.instructions = recipeToCopy.instructions
+        newRecipe.prepTime = recipeToCopy.prepTime
+        newRecipe.recipeDescription = recipeToCopy.recipeDescription
+        newRecipe.recipeName = recipeToCopy.recipeName
+        Constants.appDelegate.saveContext()
+        tableView.reloadData()
+    }
+    
+    
 }
 
 //MARK: - NSFetchControllerDelegate
@@ -196,6 +234,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         let recipe = controller.object(at: indexPath)
       
         cell.configureCell(recipe: recipe)
+        cell.recipeDelegate = self
         
         return cell
     }
@@ -212,10 +251,56 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
 }
-
-extension MainVC {
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+extension MainVC: UISearchBarDelegate {
+    //recheck to make sure works
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
+        let recipeFetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        
+        if let prepTime = Double(searchBar.text!) {
+            let timePredicate = NSPredicate(format: "prepTime <= %f", prepTime)
+            recipeFetchRequest.predicate = timePredicate
+        } else {
+            let namePredicate = NSPredicate(format: "recipeName MATCHES[cd] %@", searchBar.text!)
+            let categoryPredicate = NSPredicate(format: "categoryType.categoryName ==[cd] %@", searchBar.text!)
+            let ingredientPredicate = NSPredicate(format: "ingredient.ingredientName CONTAINS[cd] %@", searchBar.text!)
+            let descriptionPredicate = NSPredicate(format: "recipeDescription CONTAINS[cd] %@", searchBar.text!)
+            
+            recipeFetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [namePredicate, categoryPredicate, ingredientPredicate, descriptionPredicate])
+        }
+        
+       
+        
+        let sort = NSSortDescriptor(key: "recipeName", ascending: true)
+        recipeFetchRequest.sortDescriptors = [sort]
+        
+        let controller = NSFetchedResultsController(fetchRequest: recipeFetchRequest, managedObjectContext: Constants.context, sectionNameKeyPath: nil, cacheName: nil)
+        
+        controller.delegate = self
+        self.controller = controller
+        
+        do {
+            try controller.performFetch()
+        } catch  {
+            print(error.localizedDescription)
+        }
+        
+        tableView.reloadData()
     }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            fetchRecipes()
+            tableView.reloadData()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+            
+        }
+    }
+        
 }
+
+
 

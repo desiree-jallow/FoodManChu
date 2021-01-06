@@ -16,10 +16,6 @@ class UserIngredientsCell: UITableViewCell {
     
     weak var cellDelegate:CustomCellDelegate?
     
-    let tapAction:(Ingredient) -> () = {ingredient in
-        Constants.context.delete(ingredient)
-        Constants.appDelegate.saveContext()
-    }
     
     @IBAction func trashPressed(_ sender: UIButton) {
         cellDelegate?.customCell(cell: self, didTappedThe: sender)

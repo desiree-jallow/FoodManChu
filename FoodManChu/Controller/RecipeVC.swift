@@ -43,7 +43,7 @@ class RecipeVC: UIViewController  {
         
         // Do any additional setup after loading the view.
     }
-    
+    //MARK: - Save Recipe
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         var recipe: Recipe!
         
@@ -73,12 +73,12 @@ class RecipeVC: UIViewController  {
             recipe.prepTime = doubleText
         }
         for ingredient in ingredientsArray {
-            ingredient.isSelected = true
+//            ingredient.isSelected = true
             ingredient.addToRecipe(recipe)
         }
-        Constants.appDelegate.saveContext()
+        saveData()
 }
-    
+    //make sure the correct ingredients are checked
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if recipeToEdit != nil {
             if segue.identifier == Constants.ingredientsSegue {
@@ -136,6 +136,7 @@ extension RecipeVC: UIPickerViewDelegate, UIPickerViewDataSource {
 //MARK: - UITextFieldDelegate
 extension RecipeVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
         if let text = prepTextField.text {
             let value = Float(text) ?? 240.0
             prepSlider.setValue(value, animated: true)
@@ -169,15 +170,15 @@ extension RecipeVC {
         }
     }
     
-    func generateCategories() {
-        
-        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
-        for category in categories {
-            let myCategory = Category(context: Constants.context)
-            myCategory.categoryName = category
-            saveData()
-        }
-    }
+//    func generateCategories() {
+//
+//        let categories = ["Meat", "Vegetarian", "Vegan", "Paleo", "Keto"]
+//        for category in categories {
+//            let myCategory = Category(context: Constants.context)
+//            myCategory.categoryName = category
+//            saveData()
+//        }
+//    }
     
     func fetchCategories() {
         

@@ -156,15 +156,15 @@ extension IngredientsVC: CustomCellDelegate {
     
 //MARK: - Generate and Fetch Ingredients List
     extension IngredientsVC {
-        func generateIngredients() {
-            let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
-        
-        for ingredient in ingredientsList {
-            let myIngredient = Ingredient(context: Constants.context)
-            myIngredient.ingredientName = ingredient
-            Constants.appDelegate.saveContext()
-        }
-    }
+//        func generateIngredients() {
+//            let ingredientsList = ["ground beef", "turkey", "chicken thighs", "shrimp", "tuna fish", "crab", "lamb", "steak", "ground turkey", "chicken breast", "parmesan cheese", "milk", "cream cheese", "cheddar cheese", "yogurt", "buttermilk", "condensed milk", "tilapia", "salmon", "broccoli", "green beans", "tomatoes", "sweet potatoes", "onions", "mushrooms", "lettuce", "shallots", "pumpkin", "jalapeño", "heavy cream","fish stock", "cod", "cat fish","bread crumbs", "salt", "pepper", "soy sauce", "flour","olive oil", "garlic", "butter", "corn","carrot","bell pepper", "spinach","coconut oil","tomato puree","vegetable oil","pasta" ]
+//        
+//        for ingredient in ingredientsList {
+//            let myIngredient = Ingredient(context: Constants.context)
+//            myIngredient.ingredientName = ingredient
+//            Constants.appDelegate.saveContext()
+//        }
+//    }
     
         func fetchIngredients(for recipe: Recipe?) {
         let fetchRequest: NSFetchRequest<Ingredient> = Ingredient.fetchRequest()

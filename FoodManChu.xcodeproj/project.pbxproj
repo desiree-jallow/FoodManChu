@@ -53,6 +53,7 @@
 		D7431DE325782FAE004E6755 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D745F6B02576FF49002F77C7 /* FoodManChu.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -113,7 +114,6 @@
 				D745F6B32576FF4B002F77C7 /* Assets.xcassets */,
 				D745F6B52576FF4B002F77C7 /* LaunchScreen.storyboard */,
 				D745F6B82576FF4B002F77C7 /* Info.plist */,
-				D745F6B02576FF49002F77C7 /* FoodManChu.xcdatamodeld */,
 			);
 			path = FoodManChu;
 			sourceTree = "<group>";
