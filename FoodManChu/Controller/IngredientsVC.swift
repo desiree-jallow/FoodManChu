@@ -87,7 +87,7 @@ class IngredientsVC: UITableViewController, NSFetchedResultsControllerDelegate {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let ingredient = controller.object(at: indexPath)
         ingredient.isSelected.toggle()
-        Constants.appDelegate.saveContext()
+//        Constants.appDelegate.saveContext()
         tableView.reloadData()
         
         tableView.deselectRow(at: indexPath, animated: true)
@@ -181,6 +181,8 @@ extension IngredientsVC: CustomCellDelegate {
                         ingredient.isSelected = false
                     } else if recipe?.ingredient?.contains(ingredient) == true {
                         ingredient.isSelected = true
+                    } else if recipe?.ingredient?.contains(ingredient) == false {
+                        ingredient.isSelected = false
                     }
             }
         } catch  {

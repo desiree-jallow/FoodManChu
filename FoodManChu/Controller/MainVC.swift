@@ -55,7 +55,7 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
             fetchCategory()
             fetchIngredients()
             
-           saveData()
+        Constants.appDelegate.saveContext()
         
     }
     
@@ -105,7 +105,6 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
             let predicate = NSPredicate(format: "ingredientName IN %@", ingredientsArray)
             ingredientFetchRequest.predicate = predicate
         
-//        let predicate = NSPredicate(format: "ingredientName IN %@", argumentArray: ingredientsArray)
         
         do {
             let ingredients = try Constants.context.fetch(ingredientFetchRequest)

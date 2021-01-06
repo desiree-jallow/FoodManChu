@@ -27,6 +27,7 @@ class RecipeVC: UIViewController  {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+      
         setBorder(for: descTextField)
         setBorder(for: instructionsTextField)
         imagePicker.delegate = self
@@ -72,11 +73,14 @@ class RecipeVC: UIViewController  {
         if let prepText = prepTextField.text, let doubleText = Double(prepText) {
             recipe.prepTime = doubleText
         }
+        
         for ingredient in ingredientsArray {
-//            ingredient.isSelected = true
+            ingredient.isSelected = true
             ingredient.addToRecipe(recipe)
         }
-        saveData()
+        print(recipe.ingredient?.allObjects)
+        ingredientsArray.removeAll()
+        Constants.appDelegate.saveContext()
 }
     //make sure the correct ingredients are checked
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
