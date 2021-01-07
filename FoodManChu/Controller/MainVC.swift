@@ -19,7 +19,7 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchRecipes()
-        //generateDummyRecipe()
+//        generateDummyRecipe()
         //generateIngredients()
         //generateCategories()
     }
@@ -82,7 +82,7 @@ class MainVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     func fetchCategory() {
         let categoryFetchRequest: NSFetchRequest<Category> = Category.fetchRequest()
-        let predicate = NSPredicate(format: "categoryName == %@", "Meat")
+        let predicate = NSPredicate(format: "categoryName MATCHES %@", "Meat")
         categoryFetchRequest.predicate = predicate
         do {
             let categories = try Constants.context.fetch(categoryFetchRequest)
@@ -204,8 +204,8 @@ extension MainVC {
             }
         case .update:
             if let indexPath = indexPath {
-                let cell = tableView.cellForRow(at: indexPath) as! RecipeCell
-                cell.configureCell(recipe: anObject as! Recipe)
+                let cell = tableView.cellForRow(at: indexPath) as? RecipeCell
+                cell?.configureCell(recipe: anObject as! Recipe)
             }
         case .move:
             if let indexPath = indexPath {
